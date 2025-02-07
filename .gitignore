@@ -3,6 +3,7 @@ local/
 dist/
 .promptflow/
 junit/
+.env
 *.xlsx
 responses.jsonl
 temp-dataset.jsonl
