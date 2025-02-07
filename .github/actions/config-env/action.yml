@@ -143,7 +143,6 @@ runs:
           azd init -e ${{ inputs.AZURE_ENV_NAME }} -l $AZURE_LOCATION -s $AZURE_SUBSCRIPTION_ID
 
           # Run azd env refresh and capture outputs
-          azd env refresh -e genaiops-project-dev
           set +e
           output=$(azd env refresh -e "${{ inputs.AZURE_ENV_NAME }}" 2>&1)
           exit_code=$?
@@ -164,8 +163,7 @@ runs:
           fi
 
           # Checking if the resource group exists
-          azd env get-values -e genaiops-project-dev
-          export AZURE_RESOURCE_GROUP=$(azd env get-values -e ${{ inputs.AZURE_ENV_NAME }} | grep AZURE_RESOURCE_GROUP | cut -d'=' -f2 | tr -d '"' || true)
+          export AZURE_RESOURCE_GROUP="rg-${{ inputs.AZURE_ENV_NAME }}"
           if [ -z "$AZURE_RESOURCE_GROUP" ]; then
             resource_group_exist=false
           else
