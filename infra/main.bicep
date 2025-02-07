@@ -141,7 +141,7 @@ module appService  'core/host/appservice.bicep'  = {
     }
   }
 }
- 
+/*
 module storageBlobDataReaderRoleToProject 'core/security/role.bicep' = {
   scope: rg
   name: 'storage-blob-data-reader-role'
@@ -272,7 +272,7 @@ module appserviceAcrRolePull 'core/security/role.bicep' = {
     principalType: 'ServicePrincipal'
   }
 }
- 
+*/
 // output for post processing
  
 output AZURE_TENANT_ID string = tenant().tenantId
