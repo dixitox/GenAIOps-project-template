@@ -143,6 +143,7 @@ runs:
           azd init -e ${{ inputs.AZURE_ENV_NAME }} -l $AZURE_LOCATION -s $AZURE_SUBSCRIPTION_ID
 
           # Run azd env refresh and capture outputs
+          azd env refresh -e genaiops-project-dev
           set +e
           output=$(azd env refresh -e "${{ inputs.AZURE_ENV_NAME }}" 2>&1)
           exit_code=$?
