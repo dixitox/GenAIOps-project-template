@@ -73,7 +73,7 @@ def main():
     relevance_evaluator = RelevanceEvaluator(model_config=model_config)
     coherence_evaluator = CoherenceEvaluator(model_config=model_config)
 
-    data = "./responses.jsonl"  # path to the data file
+    data = "responses.jsonl"  # path to the data file
 
     prefix = os.getenv("PREFIX", datetime.now().strftime("%y%m%d%H%M%S"))[:14] 
     evaluation_name=f"{prefix} Quality Evaluation"
