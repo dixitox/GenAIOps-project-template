@@ -151,7 +151,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
             name: flow-eval-results
-            path: qa_flow_quality_eval.json.json
+            path: qa_flow_quality_eval.json
 
   qa-safety-evaluation:
     needs: setup-env-job    
@@ -272,7 +272,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Install Azure Developer CLI 
-        uses: Azure/setup-azd@v1.0.0
+        uses: Azure/setup-azd@v2.1.0
 
       - name: azd Login
         shell: bash  
@@ -314,6 +314,10 @@ jobs:
       SOURCE_REGISTRY: ${{ needs.get-source-acr-and-repository.outputs.SOURCE_REGISTRY }}
       AZURE_CONTAINER_REGISTRY_NAME: ${{ needs.setup-env-job.outputs.AZURE_CONTAINER_REGISTRY_NAME }}
       AZURE_CONTAINER_REPOSITORY_NAME: ${{ needs.setup-env-job.outputs.AZURE_CONTAINER_REPOSITORY_NAME }}
+      AZURE_SUBSCRIPTION_ID: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+      AZURE_ENV_NAME: ${{ vars.AZURE_ENV_NAME }}
+      AZURE_RESOURCE_GROUP: ${{needs.setup-env-job.outputs.AZURE_RESOURCE_GROUP}}   
+      AZUREAI_PROJECT_NAME: ${{needs.setup-env-job.outputs.AZUREAI_PROJECT_NAME}} 
     steps:   
       - name: Checkout
         uses: actions/checkout@v4
@@ -362,7 +366,7 @@ jobs:
         if: steps.check_image.outputs.IMAGE_EXISTS == 'false'      
         uses: actions/setup-python@v5
         with:
-          python-version: 3.8
+          python-version: 3.11
 
       - name: Install Promptflow CLI
         if: steps.check_image.outputs.IMAGE_EXISTS == 'false'

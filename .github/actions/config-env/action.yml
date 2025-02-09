@@ -36,14 +36,14 @@ runs:
         fi      
 
     - name: Install Azure Developer CLI 
-      uses: Azure/setup-azd@v1.0.0
+      uses: Azure/setup-azd@v2.1.0
 
     - name: Login to Azure CLI
       uses: azure/login@v2
       with:
         creds: ${{ inputs.AZURE_CREDENTIALS }}
 
-    - name: Set permissions for service principal 
+    - name: Define RG and Set permissions for service principal
       shell: bash
       run: |
         echo "Setting permissions for service principal..."
@@ -56,6 +56,15 @@ runs:
         principalId=$(az ad sp list --filter "appId eq '$clientId'" --query "[].id" -o tsv)
         
         scope="/subscriptions/$subscriptionId/resourceGroups/$rg"
+
+        # Check if the resource group exists
+        rg_exists=$(az group exists --name "$rg")
+        if [ "$rg_exists" = false ]; then
+          echo "Resource group $rg does not exist. Creating resource group..."
+          az group create --name "$rg" --location "${{ inputs.AZURE_LOCATION }}"
+        else
+          echo "Resource group $rg already exists."
+        fi
 
         # Assign roles
         roles=(
@@ -92,7 +101,7 @@ runs:
     - name: Setup Python 
       uses: actions/setup-python@v5
       with:
-          python-version: 3.8
+          python-version: 3.11
 
     - name: Provision environment
       shell: bash
@@ -222,6 +231,7 @@ runs:
           # Previous deployment exists. Update provisioned resources in case template has changed.
           if [  "$deployment_exists" = true ]; then
             echo "🔶 | Previous deployment exists. Updating provisioned resources in case template has changed..."
+            azd env set AZURE_PRINCIPAL_TYPE 'ServicePrincipal'
             azd provision --no-prompt
           fi
         fi
