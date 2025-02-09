@@ -314,6 +314,9 @@ jobs:
       SOURCE_REGISTRY: ${{ needs.get-source-acr-and-repository.outputs.SOURCE_REGISTRY }}
       AZURE_CONTAINER_REGISTRY_NAME: ${{ needs.setup-env-job.outputs.AZURE_CONTAINER_REGISTRY_NAME }}
       AZURE_CONTAINER_REPOSITORY_NAME: ${{ needs.setup-env-job.outputs.AZURE_CONTAINER_REPOSITORY_NAME }}
+      AZURE_SUBSCRIPTION_ID: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+      AZURE_ENV_NAME: ${{ vars.AZURE_ENV_NAME }}
+      AZURE_RESOURCE_GROUP: ${{ vars.AZURE_RESOURCE_GROUP }}   
     steps:   
       - name: Checkout
         uses: actions/checkout@v4
