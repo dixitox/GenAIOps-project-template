@@ -26,6 +26,11 @@ def main():
     flow = "./src"  # path to the flow
     data = "./evaluations/test-dataset.jsonl"  # path to the data file
 
+    # Check if the data file exists
+    if not os.path.exists(data):
+        print(f"Error: Data file {data} not found.")
+        return
+
     # base run
     base_run = pf.run(
         flow=flow,
@@ -73,7 +78,7 @@ def main():
     relevance_evaluator = RelevanceEvaluator(model_config=model_config)
     coherence_evaluator = CoherenceEvaluator(model_config=model_config)
 
-    data = "responses.jsonl"  # path to the data file
+    data = "./responses.jsonl"  # path to the data file
 
     prefix = os.getenv("PREFIX", datetime.now().strftime("%y%m%d%H%M%S"))[:14] 
     evaluation_name=f"{prefix} Quality Evaluation"
@@ -110,5 +115,4 @@ def main():
     print(f"Check QA evaluation result {evaluation_name} in the 'Evaluation' section of your project: {azure_config.workspace_name}.")
           
 if __name__ == '__main__':
-    import promptflow as pf
     main()
