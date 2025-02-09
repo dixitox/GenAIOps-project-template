@@ -43,7 +43,7 @@ runs:
       with:
         creds: ${{ inputs.AZURE_CREDENTIALS }}
 
-    - name: Set permissions for service principal 
+    - name: Define RG and Set permissions for service principal
       shell: bash
       run: |
         echo "Setting permissions for service principal..."
@@ -56,6 +56,15 @@ runs:
         principalId=$(az ad sp list --filter "appId eq '$clientId'" --query "[].id" -o tsv)
         
         scope="/subscriptions/$subscriptionId/resourceGroups/$rg"
+
+        # Check if the resource group exists
+        rg_exists=$(az group exists --name "$rg")
+        if [ "$rg_exists" = false ]; then
+          echo "Resource group $rg does not exist. Creating resource group..."
+          az group create --name "$rg" --location "${{ inputs.AZURE_LOCATION }}"
+        else
+          echo "Resource group $rg already exists."
+        fi
 
         # Assign roles
         roles=(
