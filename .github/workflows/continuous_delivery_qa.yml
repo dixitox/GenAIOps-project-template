@@ -316,8 +316,8 @@ jobs:
       AZURE_CONTAINER_REPOSITORY_NAME: ${{ needs.setup-env-job.outputs.AZURE_CONTAINER_REPOSITORY_NAME }}
       AZURE_SUBSCRIPTION_ID: ${{ vars.AZURE_SUBSCRIPTION_ID }}
       AZURE_ENV_NAME: ${{ vars.AZURE_ENV_NAME }}
-      AZURE_RESOURCE_GROUP: ${{ vars.AZURE_RESOURCE_GROUP }}   
-      AZUREAI_PROJECT_NAME: ${{ vars.AZUREAI_PROJECT_NAME }}
+      AZURE_RESOURCE_GROUP: ${{needs.setup-env-job.outputs.AZURE_RESOURCE_GROUP}}   
+      AZUREAI_PROJECT_NAME: ${{needs.setup-env-job.outputs.AZUREAI_PROJECT_NAME}} 
     steps:   
       - name: Checkout
         uses: actions/checkout@v4
